@@ -156,7 +156,6 @@ You won't need to be a data scientist, but you will regularly need to inspect, q
 | Resource | Type | Link |
 |---|---|---|
 | FastAPI Official Tutorial | Docs (free) | [Link](https://fastapi.tiangolo.com/tutorial/) |
-| Python API Development (19-Hour Course) | freeCodeCamp / YouTube (free) | [Link](https://www.youtube.com/watch?v=ZtqBQ68cfJc) |
 | Python API Development with FastAPI (Full Course) | freeCodeCamp / YouTube (free) | [Link](https://www.youtube.com/watch?v=0sOvCWFmrtA) |
 **What to focus on:** Creating GET and POST endpoints, path and query parameters, request bodies with Pydantic, running uvicorn, and using FastAPI's built-in `/docs` interface.
 
