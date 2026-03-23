@@ -157,7 +157,7 @@ You won't need to be a data scientist, but you will regularly need to inspect, q
 |---|---|---|
 | FastAPI Official Tutorial | Docs (free) | [Link](https://fastapi.tiangolo.com/tutorial/) |
 | Python API Development (19-Hour Course) | freeCodeCamp / YouTube (free) | [Link](https://www.youtube.com/watch?v=ZtqBQ68cfJc) |
-
+| Python API Development with FastAPI (Full Course) | freeCodeCamp / YouTube (free) | [Link](https://www.youtube.com/watch?v=0sOvCWFmrtA) |
 **What to focus on:** Creating GET and POST endpoints, path and query parameters, request bodies with Pydantic, running uvicorn, and using FastAPI's built-in `/docs` interface.
 
 ---
@@ -570,6 +570,7 @@ An agent is not magic — it's a surprisingly simple pattern. Agents are goal-dr
 | OpenAI: A Practical Guide to Building Agents | PDF (free) | [Link](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf) |
 | freeCodeCamp: The Open Source LLM Agent Handbook | Article (free) | [Link](https://www.freecodecamp.org/news/the-open-source-llm-agent-handbook/) |
 | LangChain Academy: Introduction to LangGraph | Free course | [Link](https://academy.langchain.com/courses/intro-to-langgraph) |
+| OpenAI Agents SDK | Docs (free) | [Link](https://openai.github.io/openai-agents-python/) |
 
 **What to focus on:** The perceive → plan → act → observe cycle, how the agent loop terminates, what happens when a tool call fails inside a loop, and why agents are just while loops with an LLM making the branching decisions.
 
