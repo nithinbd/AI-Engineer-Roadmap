@@ -238,6 +238,21 @@ Tool calling is what transforms an LLM from a text generator into something that
 
 ---
 
+### 3b. MCP — Model Context Protocol
+
+MCP is an open standard (released by Anthropic in late 2024) that lets AI models connect to external tools and data sources in a standardized way — think of it as "USB-C for AI tools." In 2025–2026 it became the dominant way to wire agents to real-world services.
+
+**Resources:**
+
+| Resource | Type | Link |
+| --- | --- | --- |
+| Anthropic MCP Docs | Docs (free) | [Link](https://modelcontextprotocol.io/introduction) |
+| MCP GitHub (spec + SDKs) | Open source (free) | [Link](https://github.com/modelcontextprotocol) |
+| MCP Servers Registry | Reference (free) | [Link](https://github.com/modelcontextprotocol/servers) |
+
+**What to focus on:** What MCP is vs raw function calling, how to run a local MCP server, connecting Claude or OpenAI to an MCP server, and browsing the community server registry (filesystem, GitHub, Slack, PostgreSQL — all pre-built).
+
+---
 ### 4. Streaming Responses
 
 Streaming means showing the model's output as it's being generated — word by word — rather than waiting for the full response. It makes your apps feel dramatically faster and more alive.
@@ -378,6 +393,22 @@ Your documents are too large to embed as a whole. Chunking breaks them into smal
 
 ---
 
+### 2b. Hybrid Search (Semantic + Keyword)
+
+Pure vector search misses exact matches — product names, codes, IDs. Pure keyword search (BM25) misses meaning. Hybrid search combines both and is the production standard for RAG in 2025+.
+
+**Resources:**
+
+| Resource | Type | Link |
+| --- | --- | --- |
+| Weaviate: Hybrid Search Explained | Blog (free) | [Link](https://weaviate.io/blog/hybrid-search-explained) |
+| Pinecone: Sparse-Dense Hybrid Search | Docs (free) | [Link](https://docs.pinecone.io/guides/data/sparse-dense) |
+| LangChain: Ensemble Retriever | Docs (free) | [Link](https://python.langchain.com/docs/integrations/retrievers/ensemble/) |
+
+**What to focus on:** What BM25 is and why it complements embeddings, the `EnsembleRetriever` pattern in LangChain (combine BM25 + vector with weighted scoring), and why hybrid search reduces retrieval failures on named entities and technical terms.
+
+---
+
 ### 3. Vector Databases
 
 Once you have embeddings, you need somewhere to store and search them efficiently.
@@ -444,6 +475,19 @@ Most RAG failures aren't model failures — they're retrieval failures.
 |---|---|---|
 | LangChain: Query Transformations | Docs (free) | [Link](https://python.langchain.com/docs/how_to/#query-analysis) |
 | Pinecone: Improving Retrieval Quality | Blog (free) | [Link](https://www.pinecone.io/learn/retrieval-augmented-generation/#retrieval-quality) |
+
+---
+
+### 6. Debugging Retrieval Failures
+
+Most RAG failures aren't model failures — they're retrieval failures.
+
+| Issue | Cause | Fix |
+| --- | --- | --- |
+| **Semantic drift** | Query embedding doesn't match chunk embedding | Query rewriting or HyDE |
+| **Chunk boundary problems** | Relevant info split across two chunks | Increase overlap or use semantic chunking |
+| **Missing metadata context** | Chunks belong to wrong document/date | Use metadata filtering |
+| **Top-k too small** | Right chunk not in top results | Increase `top_k` at retrieval |
 
 ---
 
@@ -711,13 +755,31 @@ If your AI app has an API, it needs authentication. Without it, anyone can burn 
 | OWASP API Security Top 10 | Reference (free) | [Link](https://owasp.org/API-Security/) |
 | Auth0: API Auth Best Practices | Guide (free) | [Link](https://auth0.com/docs/get-started/authentication-and-authorization) |
 
-**What to focus on:** JWT tokens for user auth, API key management for service-to-service communication, rate limiting per user/key, never storing secrets in code (use environment variables), and understanding the difference between authentication (who are you) and authorization (what can you do). and Observability
+
+### 4. Authentication and API Key Security
+
+If your AI app has an API, it needs authentication. Without it, anyone can burn through your LLM credits and you'll wake up to a $5,000 bill.
+
+**Resources:**
+
+| Resource | Type | Link |
+| --- | --- | --- |
+| FastAPI Security Docs | Docs (free) | [Link](https://fastapi.tiangolo.com/tutorial/security/) |
+| OWASP API Security Top 10 | Reference (free) | [Link](https://owasp.org/API-Security/) |
+| Auth0: API Auth Best Practices | Guide (free) | [Link](https://auth0.com/docs/get-started/authentication-and-authorization) |
+
+**What to focus on:** JWT tokens for user auth, API key management for service-to-service communication, rate limiting per user/key, never storing secrets in code (use environment variables), and understanding the difference between authentication (who are you) and authorization (what can you do).
+
+---
+
+### 5. Logging and Observability
 
 In production, if you can't see what's happening, you can't fix what's broken. LLM apps have a unique challenge: the model can return a 200 status code and still produce a useless or hallucinated answer.
 
 **Resources:**
+
 | Resource | Type | Link |
-|---|---|---|
+| --- | --- | --- |
 | Langfuse | Open source (free tier) | [Link](https://langfuse.com/docs/observability/overview) |
 | LangSmith | Free tier | [Link](https://smith.langchain.com/) |
 | Python Structlog | Open source (free) | [Link](https://www.structlog.org/) |
@@ -725,6 +787,39 @@ In production, if you can't see what's happening, you can't fix what's broken. L
 **What to focus on:** Tracing every LLM call (input prompt, output, tokens, latency, cost), structured JSON logging, dashboards for request volume, error rates, and cost per day.
 
 ---
+
+### 6. Prompt Version Management
+
+In production, your prompts are code. They need version control, testing, and rollback ability.
+
+**Resources:**
+
+| Resource | Type | Link |
+| --- | --- | --- |
+| Langfuse Prompt Management | Docs (free) | [Link](https://langfuse.com/docs/prompts) |
+| Anthropic Prompt Management Best Practices | Docs (free) | [Link](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview) |
+
+**What to focus on:** Storing prompts outside your application code, versioning every prompt change, A/B testing prompt variants in production, and having a rollback strategy when a new prompt performs worse.
+
+---
+
+### 7. Cost Monitoring and Rate Limits
+
+LLM APIs charge per token. Without cost controls, a traffic spike or a bug in your prompt can burn through hundreds of dollars in minutes.
+
+**Resources:**
+
+| Resource | Type | Link |
+| --- | --- | --- |
+| OpenAI Usage Dashboard | Official | [Link](https://platform.openai.com/usage) |
+| Anthropic Usage Dashboard | Official | [Link](https://console.anthropic.com/) |
+| Helicone | Free tier | [Link](https://www.helicone.ai/) |
+| LiteLLM | Open source (free) | [Link](https://github.com/BerriAI/litellm) |
+
+**What to focus on:** Setting hard spending limits per day/month, implementing per-user rate limits in your API, using cheaper models for simple tasks, caching repeated identical requests with Redis, and monitoring cost per request to catch expensive prompts early.
+
+---
+
 
 ### 6. Prompt Version Management
 
@@ -766,6 +861,31 @@ If 20% of your users ask similar questions, you're paying for the same LLM call 
 
 ---
 
+### 8b. LLM Output Safety and Data Exfiltration
+
+Prompt injection (covered in Month 2) is one threat. Production apps face additional risks: sensitive data leaking into LLM responses, model outputs being used to exfiltrate internal info, and unfiltered outputs reaching end users.
+
+**Resources:**
+
+| Resource | Type | Link |
+| --- | --- | --- |
+| OWASP LLM Top 10 (full list) | Reference (free) | [Link](https://owasp.org/www-project-top-10-for-large-language-model-applications/) |
+| Guardrails AI | Open source (free) | [Link](https://github.com/guardrails-ai/guardrails) |
+| NeMo Guardrails (Nvidia) | Open source (free) | [Link](https://github.com/NVIDIA/NeMo-Guardrails) |
+
+**What to focus on:** Output filtering before returning to users, blocking PII from leaking into prompts, input/output validation layers, and the principle of never trusting LLM output to make irreversible decisions automatically.
+
+---
+
+| Resource | Type | Link |
+| --- | --- | --- |
+| OpenAI Agents SDK | Docs (free) | [Link](https://openai.github.io/openai-agents-python/) |
+
+> Also compare the OpenAI Agents SDK (simpler, fewer abstractions) against LangGraph (more control, stateful graphs) — knowing both makes you flexible across different team stacks.
+
+---
+
+| Python API Development with FastAPI (Full Course) | freeCodeCamp / YouTube (free) | [Link](https://www.youtube.com/watch?v=0sOvCWFmrtA) |
 ### ✅ Month 5 Milestone
 
 By the end of this month you should be able to:
